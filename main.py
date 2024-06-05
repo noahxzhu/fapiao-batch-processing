@@ -1,5 +1,6 @@
 import os
 import re
+from os.path import isfile
 
 import pandas as pd
 import pymupdf
@@ -95,4 +96,9 @@ for d in data:
 
 data.append(["", "", "", total_price])
 df = pd.DataFrame(data, columns=["文件名", "发票编号", "开票日期", "金额"])
-df.to_excel(f"{fapiao_dir}/invoices.xlsx", index=False)
+
+excel_path = f"{fapiao_dir}/invoices.xlsx"
+if os.path.isfile(excel_path):
+    os.remove(excel_path)
+
+df.to_excel(excel_path, index=False)
