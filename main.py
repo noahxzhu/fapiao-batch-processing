@@ -3,9 +3,12 @@ import re
 
 import pandas as pd
 import pymupdf
+from openpyxl import load_workbook
+from openpyxl.utils import get_column_letter
 from tqdm import tqdm
 
 fapiao_dir = "/Users/noah/Downloads/invoice"
+export_excel_file_name = "invoices.xlsx"
 
 
 def list_files(directory):
@@ -97,8 +100,27 @@ for d in data:
 data.append(["", "", "", total_price])
 df = pd.DataFrame(data, columns=["文件名", "发票编号", "开票日期", "金额"])
 
-excel_path = f"{fapiao_dir}/invoices.xlsx"
+excel_path = f"{fapiao_dir}/{export_excel_file_name}"
 if os.path.isfile(excel_path):
     os.remove(excel_path)
 
 df.to_excel(excel_path, index=False)
+
+
+# Adjust the column width
+wb = load_workbook(excel_path)
+ws = wb.active
+
+for col in ws.columns:
+    max_length = 0
+    column = col[0].column
+
+    for cell in col:
+        if cell.value:
+            cell_length = len(str(cell.value))
+            max_length = max(max_length, cell_length)
+
+    adjusted_width = max_length + 2
+    ws.column_dimensions[get_column_letter(column)].width = adjusted_width
+
+wb.save(excel_path)

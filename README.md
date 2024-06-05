@@ -3,7 +3,8 @@
 ## How to use?
 
 Replace the `fapiao_dir` with yours.
-Replace the `excel_path` if you want.
+
+Replace the `export_excel_file_name` if you want.
 
 ```shell
 python -m venv .venv
