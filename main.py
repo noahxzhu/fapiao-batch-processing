@@ -1,9 +1,9 @@
 import os
 import re
-from os.path import isfile
 
 import pandas as pd
 import pymupdf
+from tqdm import tqdm
 
 fapiao_dir = "/Users/noah/Downloads/invoice"
 
@@ -31,7 +31,7 @@ files = list_files(fapiao_dir)
 
 data = []
 
-for filename in files:
+for filename in tqdm(files):
     file_path = f"{fapiao_dir}/{filename}"
     is_zzs = False
     fapiao_code = ""
